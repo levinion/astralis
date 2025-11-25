@@ -20,7 +20,8 @@ const DEFAULT_SETTINGS: AppSettings = {
   theme: 'system',
   searchEngine: "duckduckgo",
   backgroundMode: "default",
-  backgroundColor: "#020203",
+  backgroundColorLight: "#eff1f5",
+  backgroundColorDark: "#181825",
   openSearchInNewTab: false,
   openLinksInNewTab: false,
   showFavicons: true,
@@ -340,7 +341,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className={`min-h-screen flex flex-col items-center p-6 relative overflow-x-hidden transition-colors duration-700 bg-[#f8f9fa] dark:bg-black ${settings.showShortcuts ? 'justify-center' : 'justify-center md:justify-start md:pt-[20vh]'}`}>
+    <div className={`min-h-screen flex flex-col items-center p-6 relative overflow-x-hidden transition-colors duration-700 bg-[#eff1f5] dark:bg-black ${settings.showShortcuts ? 'justify-center' : 'justify-center md:justify-start md:pt-[20vh]'}`}>
 
       {/* --- Wallpaper / Background --- */}
       <div className="fixed inset-0 z-0 pointer-events-none transition-all duration-1000">
@@ -353,17 +354,21 @@ const App: React.FC = () => {
               transform: settings.wallpaperBlur ? 'scale(1.1)' : 'scale(1)'
             }}
           />
-        ) : settings.backgroundMode === "color" && settings.backgroundColor ? (
+        ) : settings.backgroundMode === "color" ? (
           <>
             <div
-              className="absolute inset-0 transition-opacity duration-700"
-              style={{ backgroundColor: settings.backgroundColor }}
+              className="absolute inset-0 transition-opacity duration-700 dark:opacity-0"
+              style={{ backgroundColor: settings.backgroundColorLight }}
+            />
+            <div
+              className="absolute inset-0 transition-opacity duration-700 opacity-0 dark:opacity-100"
+              style={{ backgroundColor: settings.backgroundColorDark }}
             />
           </>
         ) : (<>
           <>
             {/* Light Mode: Gradient */}
-            <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f8f9fa] to-[#f8f9fa] dark:opacity-0 transition-opacity duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-[#eff1f5] to-[#eff1f5] dark:opacity-0 transition-opacity duration-700" />
             {/* Dark Mode: Spotlight */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-zinc-800/20 via-black to-black opacity-0 dark:opacity-100 transition-opacity duration-700" />
           </>

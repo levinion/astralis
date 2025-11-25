@@ -39,7 +39,8 @@ export interface AppSettings {
   showFooter: boolean;
   openSearchInNewTab: boolean;
   openLinksInNewTab: boolean;
-  backgroundColor: string;
+  backgroundColorLight: string;
+  backgroundColorDark: string;
   customWallpaper: string;
   wallpaperBlur: boolean;
   greetingName: string;

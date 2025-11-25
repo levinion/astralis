@@ -189,13 +189,27 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {settings.backgroundMode === "color" && (
             <>
-              <input
-                type="text"
-                value={settings.backgroundColor || ''}
-                onChange={(e) => updateSettings('backgroundColor', e.target.value)}
-                className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-zinc-800 rounded-lg focus:outline-none focus:border-blue-500 bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white"
-                placeholder="#020203"
-              />
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">{t.light}</label>
+                <input
+                  type="text"
+                  value={settings.backgroundColorLight || ''}
+                  onChange={(e) => updateSettings('backgroundColorLight', e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-zinc-800 rounded-lg focus:outline-none focus:border-blue-500 bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white"
+                  placeholder="#eff1f5"
+                />
+              </div>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 dark:text-zinc-300 mb-1">{t.dark}</label>
+                <input
+                  type="text"
+                  value={settings.backgroundColorDark || ''}
+                  onChange={(e) => updateSettings('backgroundColorDark', e.target.value)}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 dark:border-zinc-800 rounded-lg focus:outline-none focus:border-blue-500 bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white"
+                  placeholder="#181825"
+                />
+              </div>
             </>
           )}
 

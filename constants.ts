@@ -67,7 +67,6 @@ export const getDefaultCategories = (language: Language = 'en'): Category[] => {
       links: [
         { id: 'l1', title: 'Gmail', url: 'https://mail.google.com' },
         { id: 'l2', title: 'YouTube', url: 'https://www.youtube.com' },
-        { id: 'l3', title: 'Weather', url: 'https://weather.com' },
       ],
     },
     {
@@ -76,7 +75,7 @@ export const getDefaultCategories = (language: Language = 'en'): Category[] => {
       links: [
         { id: 'l4', title: 'GitHub', url: 'https://github.com' },
         { id: 'l5', title: 'ChatGPT', url: 'https://chat.openai.com' },
-        { id: 'l6', title: 'Figma', url: 'https://www.figma.com' },
+        { id: 'l6', title: 'Gemini', url: 'https://gemini.google.com/app' },
       ],
     },
     {
@@ -84,7 +83,6 @@ export const getDefaultCategories = (language: Language = 'en'): Category[] => {
       title: 'News & Read',
       links: [
         { id: 'l7', title: 'Hacker News', url: 'https://news.ycombinator.com' },
-        { id: 'l8', title: 'Twitter', url: 'https://twitter.com' },
       ],
     },
   ];
