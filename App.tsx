@@ -24,10 +24,10 @@ const DEFAULT_SETTINGS: AppSettings = {
   backgroundColorDark: "#181825",
   openSearchInNewTab: false,
   openLinksInNewTab: false,
-  showFavicons: true,
+  showFavicons: false,
   layoutMode: 'list',
   showShortcuts: true,
-  showFooter: true,
+  showFooter: false,
   customWallpaper: '',
   wallpaperBlur: false,
   greetingName: ''
