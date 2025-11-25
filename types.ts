@@ -16,7 +16,6 @@ export interface SearchEngine {
   name: string;
   searchUrl: string; // URL with %s for query
   icon: string; // Emoji or generic name for icon mapping
-  isAI?: boolean;
 }
 
 export type SearchMode = 'web' | 'ai';
@@ -33,6 +32,7 @@ export interface AppSettings {
   layoutMode: LayoutMode;
   showFavicons: boolean;
   showShortcuts: boolean;
+  showFooter: boolean;
   openSearchInNewTab: boolean;
   openLinksInNewTab: boolean;
   customWallpaper: string;

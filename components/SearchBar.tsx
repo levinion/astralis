@@ -57,11 +57,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   // Fetch suggestions with debounce
   useEffect(() => {
-    if (selectedEngine.isAI) {
-      setSuggestions([]);
-      return;
-    }
-
     const timer = setTimeout(async () => {
       if (query.trim().length > 0) {
         try {
@@ -78,7 +73,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [query, selectedEngine.isAI]);
+  }, [query]);
 
   const performSearch = async (text: string) => {
     if (!text.trim()) return;
@@ -143,9 +138,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   if (!selectedEngine) return null;
 
-  const placeholderText = selectedEngine.isAI
-    ? t.searchPlaceholderAI
-    : t.searchPlaceholder.replace('%s', selectedEngine.name);
+  const placeholderText = t.searchPlaceholder.replace('%s', selectedEngine.name);
 
   return (
     <div className="w-full max-w-3xl mx-auto relative z-20" ref={searchContainerRef}>
