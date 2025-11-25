@@ -39,7 +39,7 @@ Astralis 是一个优雅的极简主义浏览器起始页，专注于提供简�
 
 1. **克隆仓库**
    ```bash
-   git clone https://github.com/yigehaozi/astralis.git
+   git clone https://github.com/levinion/astralis.git
    cd astralis
    ```
 
@@ -55,7 +55,7 @@ Astralis 是一个优雅的极简主义浏览器起始页，专注于提供简�
 
 4. **访问应用**
    
-   在浏览器中打开 `http://localhost:5173`
+   在浏览器中打开 `http://localhost:3000`
 
 #### 构建生产版本
 
@@ -133,7 +133,7 @@ Astralis is an elegant minimalist browser start page focused on providing a clea
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yigehaozi/astralis.git
+   git clone https://github.com/levinion/astralis.git
    cd astralis
    ```
 
@@ -149,7 +149,7 @@ Astralis is an elegant minimalist browser start page focused on providing a clea
 
 4. **Open in browser**
    
-   Visit `http://localhost:5173`
+   Visit `http://localhost:3000`
 
 #### Build for Production
 
