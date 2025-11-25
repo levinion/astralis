@@ -6,4 +6,11 @@ install:
 	mkdir -p ~/.config/astralis
 	rsync -r --delete dist/ ~/.config/astralis/
 
-.PHONY: install dev
+build:
+	npm run build
+	docker build -t levinion/astralis .
+
+deploy:
+	docker push levinion/astralis:latest
+
+.PHONY: install dev deploy build
