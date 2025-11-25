@@ -8,10 +8,8 @@ import { SearchBar } from './components/SearchBar';
 import { CategoryGroup } from './components/CategoryGroup';
 import { Modal } from './components/Modal';
 import { SettingsModal } from './components/SettingsModal';
-import { AiResult } from './components/AiResult';
 import { Clock } from './components/Clock';
 import { AboutModal } from './components/AboutModal';
-import { generateAnswer } from './services/geminiService';
 
 const STORAGE_KEY_DATA = 'astralis_data';
 const STORAGE_KEY_ENGINES = 'astralis_engines';
@@ -49,8 +47,8 @@ const App: React.FC = () => {
     }
     // Get default categories based on the saved language or browser language
     const savedSettings = localStorage.getItem(STORAGE_KEY_SETTINGS);
-    const language = savedSettings 
-      ? JSON.parse(savedSettings).language 
+    const language = savedSettings
+      ? JSON.parse(savedSettings).language
       : (navigator.language.startsWith('zh') ? 'zh' : 'en');
     return getDefaultCategories(language);
   });
@@ -71,12 +69,6 @@ const App: React.FC = () => {
   const [isAddEngineModalOpen, setIsAddEngineModalOpen] = useState(false);
 
   const [activeCategoryId, setActiveCategoryId] = useState<string | null>(null);
-
-  // AI State
-  const [aiResultOpen, setAiResultOpen] = useState(false);
-  const [aiQuery, setAiQuery] = useState('');
-  const [aiResponse, setAiResponse] = useState('');
-  const [isAiLoading, setIsAiLoading] = useState(false);
 
   // Form State
   const [newLinkTitle, setNewLinkTitle] = useState('');
@@ -156,15 +148,6 @@ const App: React.FC = () => {
   // --- Handlers ---
   const updateSettings = (key: keyof AppSettings, value: any) => {
     setSettings(prev => ({ ...prev, [key]: value }));
-  };
-
-  const handleAiSearch = async (query: string) => {
-    setIsAiLoading(true);
-    setAiQuery(query);
-    const response = await generateAnswer(query, t.systemInstruction);
-    setAiResponse(response);
-    setIsAiLoading(false);
-    setAiResultOpen(true);
   };
 
   // --- Data Management ---
@@ -397,7 +380,7 @@ const App: React.FC = () => {
             {isEditing ? <Settings2 size={20} strokeWidth={1.5} /> : <LayoutGrid size={20} strokeWidth={1.5} />}
           </button>
         )}
-        
+
         {/* Settings Button */}
         <button
           onClick={() => setIsSettingsOpen(true)}
@@ -424,8 +407,6 @@ const App: React.FC = () => {
         {/* Search Bar */}
         <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-100">
           <SearchBar
-            onAiResult={handleAiSearch}
-            isAiLoading={isAiLoading}
             searchEngines={searchEngines}
             isEditing={isEditing}
             onAddEngineClick={handleAddEngineClick}
@@ -596,15 +577,6 @@ const App: React.FC = () => {
         </form>
       </Modal>
 
-      {/* AI Result Modal */}
-      <AiResult
-        isOpen={aiResultOpen}
-        onClose={() => setAiResultOpen(false)}
-        query={aiQuery}
-        response={aiResponse}
-        t={t}
-      />
-
       {/* About Modal */}
       <AboutModal
         isOpen={isAboutOpen}
@@ -617,8 +589,8 @@ const App: React.FC = () => {
       <footer className={`
         fixed bottom-0 left-0 right-0 z-30 py-3 px-6 flex items-center justify-center gap-4 text-xs
         backdrop-blur-sm border-t transition-all duration-300
-        ${settings.customWallpaper 
-          ? 'text-white bg-black/40 border-white/10 [&>span]:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] [&>button]:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]' 
+        ${settings.customWallpaper
+          ? 'text-white bg-black/40 border-white/10 [&>span]:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] [&>button]:drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]'
           : 'text-gray-400 dark:text-zinc-600 bg-white/30 dark:bg-black/30 border-gray-100/50 dark:border-zinc-800/50'
         }
       `}>
@@ -626,11 +598,10 @@ const App: React.FC = () => {
         <span className={settings.customWallpaper ? 'text-white/60' : 'text-gray-300 dark:text-zinc-700'}>|</span>
         <button
           onClick={() => setIsAboutOpen(true)}
-          className={`flex items-center gap-1.5 transition-colors ${
-            settings.customWallpaper 
-              ? 'hover:text-white/80' 
-              : 'hover:text-gray-600 dark:hover:text-zinc-400'
-          }`}
+          className={`flex items-center gap-1.5 transition-colors ${settings.customWallpaper
+            ? 'hover:text-white/80'
+            : 'hover:text-gray-600 dark:hover:text-zinc-400'
+            }`}
         >
           <Info size={14} />
           <span>{t.about}</span>

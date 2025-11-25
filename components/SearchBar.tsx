@@ -2,13 +2,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Search, ChevronDown, Loader2, Plus, Trash2 } from 'lucide-react';
 import { SearchEngine } from '../types';
-import { generateAnswer } from '../services/geminiService';
 import { TranslationType } from '../translations';
 import { fetchSuggestions } from '../services/jsonp';
 
 interface SearchBarProps {
-  onAiResult: (query: string, result: string) => void;
-  isAiLoading: boolean;
   searchEngines: SearchEngine[];
   isEditing: boolean;
   onAddEngineClick: () => void;
@@ -17,9 +14,7 @@ interface SearchBarProps {
   t: TranslationType;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({ 
-  onAiResult, 
-  isAiLoading, 
+export const SearchBar: React.FC<SearchBarProps> = ({
   searchEngines,
   isEditing,
   onAddEngineClick,
@@ -30,7 +25,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const [query, setQuery] = useState('');
   const [selectedEngine, setSelectedEngine] = useState<SearchEngine>(searchEngines[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+
   // Autocomplete State
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -63,10 +58,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   // Fetch suggestions with debounce
   useEffect(() => {
     if (selectedEngine.isAI) {
-        setSuggestions([]);
-        return;
+      setSuggestions([]);
+      return;
     }
-    
+
     const timer = setTimeout(async () => {
       if (query.trim().length > 0) {
         try {
@@ -89,16 +84,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     if (!text.trim()) return;
 
     setShowSuggestions(false);
-    
-    if (selectedEngine.isAI) {
-      onAiResult(text, await generateAnswer(text, t.systemInstruction));
+
+    const url = selectedEngine.searchUrl.replace('%s', encodeURIComponent(text));
+    if (openInNewTab) {
+      window.open(url, '_blank');
     } else {
-      const url = selectedEngine.searchUrl.replace('%s', encodeURIComponent(text));
-      if (openInNewTab) {
-        window.open(url, '_blank');
-      } else {
-        window.location.href = url;
-      }
+      window.location.href = url;
     }
   };
 
@@ -117,13 +108,13 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       e.preventDefault();
       setActiveSuggestionIndex(prev => (prev > 0 ? prev - 1 : suggestions.length - 1));
     } else if (e.key === 'Enter') {
-        if (activeSuggestionIndex >= 0) {
-            e.preventDefault();
-            setQuery(suggestions[activeSuggestionIndex]);
-            performSearch(suggestions[activeSuggestionIndex]);
-        }
+      if (activeSuggestionIndex >= 0) {
+        e.preventDefault();
+        setQuery(suggestions[activeSuggestionIndex]);
+        performSearch(suggestions[activeSuggestionIndex]);
+      }
     } else if (e.key === 'Escape') {
-        setShowSuggestions(false);
+      setShowSuggestions(false);
     }
   };
 
@@ -141,7 +132,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     }
     if (isSvg) {
       return (
-        <div 
+        <div
           className={`${className} [&>svg]:w-full [&>svg]:h-full flex items-center justify-center`}
           dangerouslySetInnerHTML={{ __html: icon }}
         />
@@ -152,8 +143,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   if (!selectedEngine) return null;
 
-  const placeholderText = selectedEngine.isAI 
-    ? t.searchPlaceholderAI 
+  const placeholderText = selectedEngine.isAI
+    ? t.searchPlaceholderAI
     : t.searchPlaceholder.replace('%s', selectedEngine.name);
 
   return (
@@ -163,7 +154,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           flex items-center bg-white dark:bg-zinc-900 shadow-lg dark:shadow-black/40 border border-transparent dark:border-zinc-800
           transition-all duration-300
           ${showSuggestions && suggestions.length > 0 ? 'rounded-t-2xl rounded-b-none border-b-gray-100 dark:border-b-zinc-800' : 'rounded-full'}
-          ${isAiLoading ? 'opacity-75 cursor-wait' : ''}
           focus-within:shadow-xl focus-within:border-blue-400 dark:focus-within:border-blue-600
         `}>
           {/* Engine Selector */}
@@ -183,7 +173,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               <div className="absolute top-full left-0 mt-3 w-64 bg-white dark:bg-zinc-900 rounded-2xl shadow-xl dark:shadow-black/50 border border-gray-100 dark:border-zinc-800 overflow-hidden py-2 animate-in fade-in zoom-in-95 duration-200 origin-top-left z-30">
                 <div className="max-h-80 overflow-y-auto custom-scrollbar">
                   {searchEngines.map((engine) => (
-                    <div 
+                    <div
                       key={engine.id}
                       className={`flex items-center justify-between px-5 py-3 hover:bg-gray-50 dark:hover:bg-zinc-800/50 transition-colors cursor-pointer group/item
                         ${selectedEngine.id === engine.id ? 'bg-blue-50/50 dark:bg-blue-900/10' : ''}
@@ -198,7 +188,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                           {engine.name}
                         </span>
                       </div>
-                      
+
                       {isEditing && (
                         <button
                           onClick={(e) => {
@@ -240,21 +230,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            onFocus={() => { if(suggestions.length > 0) setShowSuggestions(true); }}
+            onFocus={() => { if (suggestions.length > 0) setShowSuggestions(true); }}
             placeholder={placeholderText}
             className="flex-1 px-3 sm:px-4 py-4 bg-transparent outline-none text-gray-800 dark:text-white placeholder-gray-400 dark:placeholder-zinc-600 text-base sm:text-lg"
             autoFocus
-            disabled={isAiLoading}
             autoComplete="off"
           />
 
           {/* Action Button */}
           <button
             type="submit"
-            disabled={isAiLoading}
             className="pr-4 sm:pr-6 pl-3 sm:pl-4 text-gray-400 dark:text-zinc-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"
           >
-            {isAiLoading ? <Loader2 className="animate-spin" size={20} /> : <Search size={20} />}
           </button>
         </div>
 
@@ -269,8 +256,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   ${index === activeSuggestionIndex ? 'bg-gray-100 dark:bg-zinc-800' : 'hover:bg-gray-50 dark:hover:bg-zinc-800/50'}
                 `}
                 onClick={() => {
-                    setQuery(suggestion);
-                    performSearch(suggestion);
+                  setQuery(suggestion);
+                  performSearch(suggestion);
                 }}
               >
                 <Search size={16} className="text-gray-400 dark:text-zinc-600" />
