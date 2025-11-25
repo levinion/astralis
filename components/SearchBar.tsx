@@ -20,10 +20,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   onAddEngineClick,
   onDeleteEngine,
   openInNewTab,
+  settings,
+  updateSettings,
   t
 }) => {
   const [query, setQuery] = useState('');
-  const [selectedEngine, setSelectedEngine] = useState<SearchEngine>(searchEngines[0]);
+  const [selectedEngine, setSelectedEngine] = useState<SearchEngine>(searchEngines.find(e => e.id === settings.searchEngine) || searchEngines[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Autocomplete State
@@ -33,13 +35,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
-
-  // Sync selected engine if searchEngines changes
-  useEffect(() => {
-    if (!searchEngines.find(e => e.id === selectedEngine.id)) {
-      setSelectedEngine(searchEngines[0] || null);
-    }
-  }, [searchEngines, selectedEngine.id]);
 
   // Click outside handler
   useEffect(() => {
@@ -115,6 +110,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleEngineSelect = (engine: SearchEngine) => {
     setSelectedEngine(engine);
+    updateSettings("searchEngine", engine.id)
     setIsDropdownOpen(false);
   };
 

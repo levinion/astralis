@@ -18,6 +18,7 @@ const STORAGE_KEY_SETTINGS = 'astralis_settings';
 const DEFAULT_SETTINGS: AppSettings = {
   language: 'en',
   theme: 'system',
+  searchEngine: "duckduckgo",
   backgroundMode: "default",
   backgroundColor: "#020203",
   openSearchInNewTab: false,
@@ -423,6 +424,8 @@ const App: React.FC = () => {
             onDeleteEngine={deleteEngine}
             openInNewTab={settings.openSearchInNewTab}
             t={t}
+            settings={settings}
+            updateSettings={updateSettings}
           />
         </div>
 

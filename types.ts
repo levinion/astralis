@@ -30,6 +30,7 @@ export type BackgroundMode = 'default' | 'color' | 'image';
 
 export interface AppSettings {
   language: Language;
+  searchEngine: "duckduckgo" | "google" | "baidu" | "bing";
   theme: Theme;
   layoutMode: LayoutMode;
   backgroundMode: BackgroundMode;
