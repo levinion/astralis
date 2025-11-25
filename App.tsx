@@ -416,7 +416,7 @@ const App: React.FC = () => {
         </div>
 
         {/* Search Bar */}
-        <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-100">
+        <div className="w-full animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
           <SearchBar
             searchEngines={searchEngines}
             isEditing={isEditing}
@@ -437,7 +437,7 @@ const App: React.FC = () => {
                 {t.dragHint}
               </div>
             )}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-in fade-in slide-in-from-bottom-8 duration-500 delay-200">
               {categories.map(category => (
                 <CategoryGroup
                   key={category.id}

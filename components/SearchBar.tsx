@@ -142,7 +142,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
         <div className={`
           flex items-center bg-white dark:bg-zinc-900 shadow-lg dark:shadow-black/40 border border-transparent dark:border-zinc-800
           transition-all duration-300
-          ${showSuggestions && suggestions.length > 0 ? 'rounded-t-2xl rounded-b-none border-b-gray-100 dark:border-b-zinc-800' : 'rounded-full'}
+          ${showSuggestions && suggestions.length > 0 ? 'rounded-t-2xl rounded-b-none border-b-gray-100 dark:border-b-zinc-800' : 'rounded-2xl'}
           focus-within:shadow-xl focus-within:border-blue-400 dark:focus-within:border-blue-600
         `}>
           {/* Engine Selector */}
