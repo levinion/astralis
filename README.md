@@ -65,6 +65,13 @@ npm run build
 
 构建后的文件将在 `dist` 目录中。
 
+
+#### Docker
+
+```bash
+docker run -d --rm --name astralis -p 8080:80 levinion/astralis:latest
+```
+
 ### ⚙️ 自定义配置
 
 #### 修改默认网站
@@ -158,6 +165,12 @@ npm run build
 ```
 
 Built files will be in the `dist` directory.
+
+#### Docker
+
+```bash
+docker run -d --rm --name astralis -p 8080:80 levinion/astralis:latest
+```
 
 ### ⚙️ Customization
 
