@@ -18,6 +18,8 @@ const STORAGE_KEY_SETTINGS = 'astralis_settings';
 const DEFAULT_SETTINGS: AppSettings = {
   language: 'en',
   theme: 'system',
+  backgroundMode: "default",
+  backgroundColor: "#020203",
   openSearchInNewTab: false,
   openLinksInNewTab: false,
   showFavicons: true,
@@ -341,7 +343,7 @@ const App: React.FC = () => {
 
       {/* --- Wallpaper / Background --- */}
       <div className="fixed inset-0 z-0 pointer-events-none transition-all duration-1000">
-        {settings.customWallpaper ? (
+        {settings.backgroundMode === "image" && settings.customWallpaper ? (
           <div
             className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
             style={{
@@ -350,14 +352,22 @@ const App: React.FC = () => {
               transform: settings.wallpaperBlur ? 'scale(1.1)' : 'scale(1)'
             }}
           />
-        ) : (
+        ) : settings.backgroundMode === "color" && settings.backgroundColor ? (
+          <>
+            <div
+              className="absolute inset-0 transition-opacity duration-700"
+              style={{ backgroundColor: settings.backgroundColor }}
+            />
+          </>
+        ) : (<>
           <>
             {/* Light Mode: Gradient */}
             <div className="absolute inset-0 bg-gradient-to-b from-white via-[#f8f9fa] to-[#f8f9fa] dark:opacity-0 transition-opacity duration-700" />
             {/* Dark Mode: Spotlight */}
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-zinc-800/20 via-black to-black opacity-0 dark:opacity-100 transition-opacity duration-700" />
           </>
-        )}
+        </>)}
+
         {/* Overlay for better text readability on custom wallpapers */}
         {settings.customWallpaper && <div className="absolute inset-0 bg-black/30 dark:bg-black/50" />}
       </div>

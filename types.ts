@@ -26,15 +26,19 @@ export type Theme = 'system' | 'light' | 'dark';
 
 export type LayoutMode = 'card' | 'list' | 'compact';
 
+export type BackgroundMode = 'default' | 'color' | 'image';
+
 export interface AppSettings {
   language: Language;
   theme: Theme;
   layoutMode: LayoutMode;
+  backgroundMode: BackgroundMode;
   showFavicons: boolean;
   showShortcuts: boolean;
   showFooter: boolean;
   openSearchInNewTab: boolean;
   openLinksInNewTab: boolean;
+  backgroundColor: string;
   customWallpaper: string;
   wallpaperBlur: boolean;
   greetingName: string;
