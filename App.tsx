@@ -380,22 +380,20 @@ const App: React.FC = () => {
 
       {/* Top Controls */}
       <div className="absolute top-6 right-6 z-40 flex items-center gap-2">
-        {/* Edit Toggle - Only show if shortcuts are enabled */}
-        {settings.showShortcuts && (
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            className={`
+        {/* Edit Toggle */}
+        <button
+          onClick={() => setIsEditing(!isEditing)}
+          className={`
               p-2.5 rounded-full transition-all duration-300 backdrop-blur-sm
               ${isEditing
-                ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-black'
-                : 'bg-transparent hover:bg-black/5 dark:hover:bg-white/10 text-gray-400 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200'
-              }
+              ? 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-black'
+              : 'bg-transparent hover:bg-black/5 dark:hover:bg-white/10 text-gray-400 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-200'
+            }
             `}
-            title={isEditing ? t.done : t.customizeLayout}
-          >
-            {isEditing ? <Settings2 size={20} strokeWidth={1.5} /> : <LayoutGrid size={20} strokeWidth={1.5} />}
-          </button>
-        )}
+          title={isEditing ? t.done : t.customizeLayout}
+        >
+          {isEditing ? <Settings2 size={20} strokeWidth={1.5} /> : <LayoutGrid size={20} strokeWidth={1.5} />}
+        </button>
 
         {/* Settings Button */}
         <button
