@@ -10,10 +10,10 @@ export const fetchSuggestions = (query: string): Promise<string[]> => {
 
     const callbackName = `jsonp_callback_${callbackCount++}`;
     const script = document.createElement('script');
-    
+
     // Using Baidu's suggestion API as it supports JSONP reliably and has good multilingual data
     const url = `https://suggestion.baidu.com/su?wd=${encodeURIComponent(query)}&cb=${callbackName}`;
-    
+
     // Define global callback
     (window as any)[callbackName] = (data: any) => {
       if (data && data.s) {

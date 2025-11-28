@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Plus, Trash2, Globe, ExternalLink, GripHorizontal } from 'lucide-react';
+import React from 'react';
+import { Plus, Trash2, ExternalLink, GripHorizontal } from 'lucide-react';
 import { Category, LayoutMode } from '../types';
 import { TranslationType } from '../translations';
 
@@ -22,33 +22,79 @@ interface CategoryGroupProps {
 
 // Internal component to handle image fallback gracefully
 const Favicon: React.FC<{ url: string; title: string; className?: string }> = ({ url, title, className }) => {
-  const [error, setError] = useState(false);
-
   const getFaviconUrl = (u: string) => {
     try {
       const domain = new URL(u).hostname;
-      return `https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
+      return `https://ico.faviconkit.net/favicon/${domain}?sz=128`;
     } catch {
       return '';
     }
   };
 
-  if (error || !url) {
+  const blobToBase64 = (blob: Blob): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        resolve(reader.result as string);
+      };
+      reader.onerror = reject;
+      reader.readAsDataURL(blob);
+    });
+  };
+
+  const ASTRALIS_ICONS_KEY = "astralis_icons"
+
+  const fetchFavicon = async (url: string) => {
+    const faviconUrl = getFaviconUrl(url)
+    const proxyedUrl = 'https://corsproxy.io/?url=' + encodeURIComponent(faviconUrl);
+    const response = await fetch(proxyedUrl, {
+      method: 'GET',
+      headers: {
+        'Accept': 'image/x-icon'
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`error: ${response.status}`);
+    }
+    let blob = await response.blob()
+    let icon = await blobToBase64(blob)
+
+    const icons = localStorage.getItem(ASTRALIS_ICONS_KEY) ?? "{}"
+    let dict: { [url: string]: string } = JSON.parse(icons)
+    dict[url] = icon
+    localStorage.setItem(ASTRALIS_ICONS_KEY, JSON.stringify(dict))
+
+    return icon
+  }
+
+  const getFavicon = (url: string): string | null => {
+    const icons = localStorage.getItem(ASTRALIS_ICONS_KEY)
+    if (icons) {
+      let dict: { [url: string]: string } = JSON.parse(icons)
+      if (url in dict) {
+        return dict[url]
+      }
+    }
+    fetchFavicon(url).then(icon => { return icon }).catch(_ => { return null })
+  }
+
+  const icon = getFavicon(url);
+
+  if (icon) {
+    return (
+      <img
+        src={icon}
+        alt=""
+        className={`object-contain rounded-md ${className}`}
+      />
+    );
+  } else {
     return (
       <div className={`flex items-center justify-center bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-500 rounded-full ${className}`}>
         <span className="font-bold uppercase text-xs sm:text-sm">{title.charAt(0)}</span>
       </div>
     );
   }
-
-  return (
-    <img
-      src={getFaviconUrl(url)}
-      alt=""
-      className={`object-contain rounded-md ${className}`}
-      onError={() => setError(true)}
-    />
-  );
 };
 
 export const CategoryGroup: React.FC<CategoryGroupProps> = ({
@@ -136,7 +182,7 @@ export const CategoryGroup: React.FC<CategoryGroupProps> = ({
                 }
                 
                 ${layoutMode === 'card' ? `
-                  flex-col p-4 aspect-[4/3] rounded-2xl gap-3 justify-center
+                  flex-col p-4 aspect-4/3 rounded-2xl gap-3 justify-center
                 ` : ''}
 
                 ${layoutMode === 'list' ? `
@@ -151,7 +197,7 @@ export const CategoryGroup: React.FC<CategoryGroupProps> = ({
               {/* --- Icon Rendering --- */}
               {showFavicons && (
                 <div className={`
-                  flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover/link:scale-110
+                  flex items-center justify-center shrink-0 transition-transform duration-300 group-hover/link:scale-110
                   ${layoutMode === 'card' ? 'w-10 h-10 shadow-sm rounded-xl' : ''}
                   ${layoutMode === 'list' ? 'w-6 h-6' : ''}
                   ${layoutMode === 'compact' ? 'w-4 h-4' : ''}
@@ -216,7 +262,7 @@ export const CategoryGroup: React.FC<CategoryGroupProps> = ({
             className={`
               flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200 dark:border-zinc-700 hover:border-blue-400 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all group/add w-full
               text-gray-400 dark:text-zinc-600 hover:text-blue-500 dark:hover:text-blue-400
-              ${layoutMode === 'card' ? 'aspect-[4/3] rounded-2xl flex-col gap-2' : ''}
+              ${layoutMode === 'card' ? 'aspect-4/3 rounded-2xl flex-col gap-2' : ''}
               ${layoutMode === 'list' ? 'h-14 rounded-xl' : ''}
               ${layoutMode === 'compact' ? 'h-10 rounded-lg' : ''}
             `}

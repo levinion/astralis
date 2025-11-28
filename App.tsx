@@ -24,7 +24,7 @@ const DEFAULT_SETTINGS: AppSettings = {
   backgroundColorDark: "#181825",
   openSearchInNewTab: false,
   openLinksInNewTab: false,
-  showFavicons: false,
+  showFavicons: true,
   layoutMode: 'list',
   showShortcuts: true,
   showFooter: false,
